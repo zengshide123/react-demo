@@ -49,4 +49,90 @@
 ```
 
 `生产环境和开发环境略有不同，依次规则参照配置即可`
+### antd (less)按需加载
+
+-  安装babel-plugin-import
+-  配置本地babel 
+    ```
+    {
+        "plugins": [
+            ["import", {
+            "libraryName": "antd",
+            "libraryDirectory": "es",
+            "style": "css" // `style: true` 会加载 less 文件
+            }]
+        ]
+    } 
+    ```
+- 再次修改webpack配置
+
+规则增加
+    ```
+         // support less
+          {
+            test: lessRegex,
+            exclude: lessModuleRegex,
+            use: getStyleLoaders({ importLoaders: 2 }, 'less-loader',{
+              javascriptEnabled:true
+            }),
+          },
+          {
+            test: lessModuleRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 2,
+                modules: true,
+                getLocalIdent: getCSSModuleLocalIdent,
+              },
+              'less-loader',{
+                javascriptEnabled:true
+              }
+            ),
+          },
+    ```
+    getStyleLoaders增新内容
+
+   ```
+        const getStyleLoaders = (cssOptions, preProcessor,preOptions) => {
+            const loaders = [
+                require.resolve('style-loader'),
+                {
+                loader: require.resolve('css-loader'),
+                options: cssOptions,
+                },
+                {
+                // Options for PostCSS as we reference these options twice
+                // Adds vendor prefixing based on your specified browser support in
+                // package.json
+                loader: require.resolve('postcss-loader'),
+                options: {
+                    // Necessary for external CSS imports to work
+                    // https://github.com/facebook/create-react-app/issues/2677
+                    ident: 'postcss',
+                    plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    require('postcss-preset-env')({
+                        autoprefixer: {
+                        flexbox: 'no-2009',
+                        },
+                        stage: 3,
+                    }),
+                    ],
+                },
+                },
+            ];
+            if (preProcessor) {
+                loaders.push({
+                loader:require.resolve(preProcessor),
+                options:preOptions
+                });
+            }
+            return loaders;
+        };
+   ```
+
+   `
+    按需加载中会遇见less版本过高问题，可以采用上述配置或者回退less至2.7.3版本
+   `
+
 
