@@ -5,8 +5,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import NavLeft from './components/Navleft';
 
-import Home from './pages/home';
-
 class Admin extends Component {
     constructor(props) {
         super(props);
@@ -21,8 +19,9 @@ class Admin extends Component {
                      <Col span="21" className="admin_main">
                         <Header/>
                         <Row className="admin_content">
-                            <Home/>
-                            {/* {this.props.children} */}
+                            <div className="admin_content_wrap">
+                                {this.props.children}
+                            </div>
                         </Row>
                         <Footer/>
                      </Col>   
