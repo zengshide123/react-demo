@@ -324,7 +324,10 @@ module.exports = {
             test: lessRegex,
             exclude: lessModuleRegex,
             use: getStyleLoaders({ importLoaders: 2 }, 'less-loader',{
-              javascriptEnabled:true
+              javascriptEnabled:true,
+              modifyVars:{
+                "@primary-color": "#f9c700"
+              }
             }),
           },
           // Adds support for CSS Modules, but using SASS
@@ -338,7 +341,10 @@ module.exports = {
                 getLocalIdent: getCSSModuleLocalIdent,
               },
               'less-loader',{
-                javascriptEnabled:true
+                javascriptEnabled:true,
+                modifyVars:{
+                  "@primary-color": "#f9c700"
+                }
               }
             ),
           },
