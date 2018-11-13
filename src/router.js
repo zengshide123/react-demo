@@ -9,7 +9,7 @@ import Nomatch from './components/Nomatch';
 import Iloading from './components/Loading';
 import Inotification from './components/Notification';
 import Imessages from './components/Message';
-import Itabs from './components/Message';
+import Itabs from './components/Tab';
 import Igallery from './components/Gallery';
 import Icarousel from './components/Carousel';
 

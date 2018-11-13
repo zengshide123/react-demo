@@ -29,7 +29,7 @@ class Iloading extends Component {
                     <Spin indicator={self_define_icon} />
                 </Card>
                 <Card title="带文字效果">
-                    <Spin tip="奔跑中..."/>
+                    <Spin tip="快速奔跑中..."/>
                 </Card>
                 <Card title="内容遮罩">
                     <Spin spinning={this.state.loading} delay={500}>
