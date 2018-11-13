@@ -18,12 +18,14 @@ class Admin extends Component {
                      </Col>   
                      <Col span="21" className="admin_main">
                         <Header/>
-                        <Row className="admin_content">
-                            <div className="admin_content_wrap">
-                                {this.props.children}
-                            </div>
-                        </Row>
-                        <Footer/>
+                        <div className="admin_scroll_wrap">
+                            <Row className="admin_content">
+                                <div className="admin_content_wrap">
+                                    {this.props.children}
+                                </div>
+                            </Row>
+                            <Footer/>
+                        </div>
                      </Col>   
                </Row>        
          );
