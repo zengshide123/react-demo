@@ -75,6 +75,7 @@ class Imodals extends Component {
                     cancelText = "取消"
                     onCancel={()=>this.handleCancle('modal4')}
                     onOk={()=>this.handleOk('modal4')}
+                    centered={true}
                 >
                     <p>水平垂直居中</p>
                 </Modal>
