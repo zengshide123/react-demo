@@ -12,6 +12,10 @@ import Imessages from './components/Message';
 import Itabs from './components/Tab';
 import Igallery from './components/Gallery';
 import Icarousel from './components/Carousel';
+import Flogin from './components/Flogin';
+import Freg from './components/Freg';
+import BasicTable from './components/BasicTable';
+import HighTable from './components/HighTable';
 
 class Irouter extends Component {
     constructor(props) {
@@ -35,6 +39,10 @@ class Irouter extends Component {
                                             <Route path="/admin/ui/tabs" component={Itabs}/>
                                             <Route path="/admin/ui/gallery" component={Igallery}/>
                                             <Route path="/admin/ui/carousel" component={Icarousel}/>
+                                            <Route path="/admin/form/login" component={Flogin}/>
+                                            <Route path="/admin/form/reg" component={Freg}/>
+                                            <Route path="/admin/table/basic" component={BasicTable}/>
+                                            <Route path="/admin/table/high" component={HighTable}/>
                                             <Route component={Nomatch}/>
                                         </Switch>
                                     </Admin>
