@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './index.less';
 import { Card, Table,Tag } from 'antd';
 import Api from '../../Api';
+import utils from '../../utils';
 
 class BasicTable extends Component {
     constructor(props) {
@@ -42,7 +43,11 @@ class BasicTable extends Component {
             dataSource:[],
             loading:true,
             dataSource1:[],
-            loading1:true
+            loading1:true,
+            selectedRowKeys:[],
+            selectedRows:[],
+            dataSource2:[],
+            paginationSettings:{}
          };
          this.timer = null;
     }
@@ -53,14 +58,36 @@ class BasicTable extends Component {
                 loading:false
                 });
         }, 1000);
-         let dataSource1 = await Api.Ajax({url:'/tableList'})
+         let dataSource1 = await Api.Ajax({
+             url:'/tableList',
+             loading:true
+        })
             this.setState({ 
                loading1 : false,
                dataSource1
              });
+        let dataSource2 = await Api.Ajax({
+            url:'/table-pagination-list',
+            loading:true
+        })
+        let paginationSettings = utils.pagination(dataSource2,(current)=>{
+            // console.log(current);
+        });
+            this.setState({ 
+               dataSource2:dataSource2.list,
+               paginationSettings
+              });
     }
     componentWillUnmount(){
         clearTimeout(this.timer)
+    }
+    handleOnRowClick=(record,index)=>{
+        console.log(index,record);
+        let selectKey = [index+1];
+        this.setState({ 
+            selectedRowKeys:selectKey,
+            selectedRows:record
+          });
     }
     render() { 
         const rowSelection = {
@@ -73,6 +100,16 @@ class BasicTable extends Component {
                             name: record.userName,
                         })
           }};
+        const rowSelection1 = {
+            type:'radio',
+            onChange:(selectedRowKeys,selectedRows)=>{
+                this.setState({ 
+                    selectedRowKeys
+                 });
+                console.log(selectedRowKeys,selectedRows);
+            },
+            selectedRowKeys:this.state.selectedRowKeys
+        }
         const columns = [
             {
                 title:'Id',
@@ -125,13 +162,13 @@ class BasicTable extends Component {
                     >
                     </Table>
                 </Card>
-                <Card title="表格动态渲染"
+                <Card title="Mock-表格动态渲染"
                     style={{marginTop:10}}
                 >
                     <Table
                         dataSource={this.state.dataSource1}
                         columns={columns}
-                        loading={this.state.loading}
+                        // loading={this.state.loading}
                         bordered
                         rowSelection={rowSelection}
                         pagination={{
@@ -139,6 +176,35 @@ class BasicTable extends Component {
                         }}
                     >
                     </Table>
+                </Card>
+                <Card title="Mock-单选"
+                    style={{marginTop:10}}
+                >
+                    <Table
+                        bordered
+                        columns={columns}
+                        dataSource={this.state.dataSource1}
+                        pagination={false}
+                        rowSelection={rowSelection1}
+                        onRow={(record,index) => {
+                            return {
+                              onClick: () => {
+                                  this.handleOnRowClick(record,index)
+                              },      
+                            }
+                          }}
+                          />
+                </Card>
+                <Card
+                    title="Mock-表格分页"
+                    style={{marginTop:10}}
+                >
+                    <Table
+                        bordered
+                        columns={columns}
+                        pagination={this.state.paginationSettings}
+                        dataSource = {this.state.dataSource2}
+                    />
                 </Card>
             </div>
          );
