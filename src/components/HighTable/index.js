@@ -2,92 +2,33 @@ import React, { Component } from 'react';
 import './index.less';
 import { Card, Table,Tag } from 'antd';
 import Api from '../../Api';
-import utils from '../../utils';
 
 class BasicTable extends Component {
     constructor(props) {
         super(props);
-        this.dataSource = [
-            {
-                id:'0',
-                userName:'Jack',
-                sex:'1',
-                state:'1',
-                hobby:'足球',
-                bornDay:'2018-11-15',
-                address:'北京市海淀区',
-                key:'0'
-            },
-            {
-                id:'1',
-                userName:'Mock',
-                sex:'0',
-                state:'0',
-                hobby:'篮球',
-                bornDay:'2018-3-23',
-                address:'上海市虹桥区',
-                key:'1'
-            },
-            {
-                id:'2',
-                userName:'Browser',
-                sex:'0',
-                state:'1',
-                hobby:'乒乓球',
-                bornDay:'2017-8-01',
-                address:'广州市天河区',
-                key:'2'
-            }
-        ];
         this.state = { 
             dataSource:[],
             loading:true,
-            dataSource1:[],
-            loading1:true,
-            selectedRowKeys:[],
-            selectedRows:[],
-            dataSource2:[],
-            paginationSettings:{}
+            dataSource1:[]
          };
-         this.timer = null;
     }
     async componentDidMount() {
-        this.timer = setTimeout(() => {
-            this.setState({
-                dataSource : this.dataSource,
-                loading:false
-                });
-        }, 1000);
-         let dataSource1 = await Api.Ajax({
-             url:'/tableList',
+         let dataSource = await Api.Ajax({
+             url:'/table-pagination-list',
              loading:true
         })
             this.setState({ 
-               loading1 : false,
-               dataSource1
+               loading : false,
+               dataSource:dataSource.list
              });
-        let dataSource2 = await Api.Ajax({
-            url:'/table-pagination-list',
-            loading:true
+         let dataSource1 = await Api.Ajax({
+             url:'/mock-fixed-bar',
+             loading:true
         })
-        let paginationSettings = utils.pagination(dataSource2,(current)=>{
-            // console.log(current);
-        });
             this.setState({ 
-               dataSource2:dataSource2.list,
-               paginationSettings
-              });
-    }
-    componentWillUnmount(){
-        clearTimeout(this.timer)
-    }
-    handleOnRowClick=(record,index)=>{
-        console.log(index,record);
-        let selectKey = [index+1];
-        this.setState({ 
-            selectedRowKeys:selectKey,
-            selectedRows:record
-          });
+               loading : false,
+               dataSource1:dataSource1.list
+             });
     }
     render() { 
         const rowSelection = {
@@ -104,39 +45,100 @@ class BasicTable extends Component {
             {
                 title:'Id',
                 dataIndex:'id',
-                key:'id'
+                key:'id',
+                width: 50
             },
             {
                 title:'用户名',
                 dataIndex:'userName',
-                key:'userName'
+                key:'userName',
+                width: 80
             },
             {
                 title:'状态',
                 dataIndex:'state',
                 key:'state',
                 render: text => text==="0"?(<Tag color="lime">在线</Tag>):(<Tag>离线</Tag>),
+                width: 81
             },
             {
                 title:'性别',
                 dataIndex:'sex',
                 key:'sex',
-                render: text => text==="0"?'男':'女',                
+                render: text => text==="0"?'男':'女',
+                width: 80          
             },
             {
                 title:'爱好',
                 dataIndex:'hobby',
-                key: 'hobby'               
+                key: 'hobby',
+                width: 80              
             },
             {
                 title:'生日',
                 dataIndex:'bornDay',
-                key: 'bornDay'                
+                key: 'bornDay',
+                width: 120               
             },
             {
                 title:'地址',
                 dataIndex:'address',
-                key: 'address'                   
+                key: 'address'            
+            }
+        ];
+        const columns1 = [
+            {
+                title:'Id',
+                dataIndex:'id',
+                key:'id',
+                // width: 50
+            },
+            {
+                title:'用户名',
+                dataIndex:'userName',
+                key:'userName',
+                // width: 80
+            },
+            {
+                title:'状态',
+                dataIndex:'state',
+                key:'state',
+                render: text => text==="0"?(<Tag color="lime">在线</Tag>):(<Tag>离线</Tag>),
+                // width: 81
+            },
+            {
+                title:'性别',
+                dataIndex:'sex',
+                key:'sex',
+                render: text => text==="0"?'男':'女',
+                // width: 80          
+            },
+            {
+                title:'爱好',
+                dataIndex:'hobby',
+                key: 'hobby',
+                // width: 80              
+            },
+            {
+                title:'生日',
+                dataIndex:'bornDay',
+                key: 'bornDay',
+                // width: 120               
+            },
+            {
+                title:'地址',
+                dataIndex:'address',
+                key: 'address'            
+            },
+            {
+                title:'早起时间',
+                dataIndex:'MorningTime',
+                key: 'MorningTime'            
+            },
+            {
+                title:'休息时间',
+                dataIndex:'eveningTime',
+                key: 'eveningTime'            
             }
         ];
         return ( 
@@ -145,23 +147,22 @@ class BasicTable extends Component {
                     <Table
                         dataSource={this.state.dataSource}
                         columns={columns}
-                        loading={this.state.loading}
+                        // loading={this.state.loading}
                         bordered
                         rowSelection={rowSelection}
                         pagination={false}
+                        scroll={{ y: 240 }}
                     >
                     </Table>
                 </Card>
-                <Card title="两侧固定"
-                    style={{marginTop:10}}
-                >
+                <Card title="两侧固定">
                     <Table
-                        dataSource={this.state.dataSource}
-                        columns={columns}
-                        loading={this.state.loading}
+                        dataSource={this.state.dataSource1}
+                        columns={columns1}
                         bordered
                         rowSelection={rowSelection}
                         pagination={false}
+                        // scroll={{ y: 240 }}
                     >
                     </Table>
                 </Card>

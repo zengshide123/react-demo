@@ -1,6 +1,4 @@
 import React from 'react';
-import { Tag } from 'antd';
-import { tag } from 'postcss-selector-parser';
 export default {
     formateDate(time){
         if(!time){
