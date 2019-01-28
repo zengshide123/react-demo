@@ -17,6 +17,7 @@ import Freg from './components/Freg';
 import BasicTable from './components/BasicTable';
 import HighTable from './components/HighTable';
 import City from './pages/city';
+import Order from './pages/order';
 
 class Irouter extends Component {
     constructor(props) {
@@ -45,6 +46,7 @@ class Irouter extends Component {
                                             <Route path="/admin/table/basic" component={BasicTable}/>
                                             <Route path="/admin/table/high" component={HighTable}/>
                                             <Route path="/admin/city" component={City}/>
+                                            <Route path="/admin/order" component={Order}/>
                                             <Route component={Nomatch}/>
                                         </Switch>
                                     </Admin>

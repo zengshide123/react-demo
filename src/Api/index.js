@@ -28,7 +28,8 @@ export default class Axios {
                 url: options.url,
                 baseURL,
                 data: options.data,
-                timeout:5000
+                timeout:5000,
+                params:  options.params
             }).then((res)=>{
                 if(options.loading){
                     loadingNode = document.getElementById('ajaxLoading');
